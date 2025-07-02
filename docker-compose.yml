@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    # A diretiva 'build: .' instrui o Compose a construir a imagem
+    # usando o Dockerfile encontrado no diretório atual.
+    build: .
+    # Nome do coneiner
+    container_name: api-escolar
+    # Mapeia a porta 8000 do seu computador (host) para a porta 8000 do contêiner,
+    # permitindo que você acesse a API via http://localhost:8000.
+    ports:
+      - "8000:8000"
+
+    # Monta o diretório atual ('.') no diretório /app dentro do contêiner.
+    # Isso é ideal para desenvolvimento, pois qualquer alteração no seu código
+    # local é refletida instantaneamente dentro do contêiner.
+    volumes:
+      - .:/app
+      
+    # Sobrescreve o CMD do Dockerfile para adicionar a flag --reload.
+    # O uvicorn irá reiniciar automaticamente o servidor sempre que detectar
+    # uma alteração nos arquivos de código, agilizando o desenvolvimento.
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
